@@ -17,7 +17,6 @@ main(F, X, Y, [V | Vs], Route) ->
 	X2 = e(1, R),
 	Y2 = e(2, R),
 	Route2 = e(3, R),
-	routeCheck({X, Y}, Route2),
 	main(F2, X2, Y2, Vs, Route2).
 
 decode(N, [D | Dist]) ->
@@ -43,6 +42,7 @@ move(F, X, Y, Dist, Route) ->
 	S = step(F, X, Y),
 	X2 = e(1, S),
 	Y2 = e(2, S),
+	routeCheck({X2, Y2}, Route),
 	move(F, X2, Y2, Dist-1, [S | Route]).
 step(F, X, Y) ->
 	case F of
@@ -82,5 +82,6 @@ routeCheck(Cur, [R | Rs]) ->
 		Cur == R ->
 			io:fwrite("intersection: ~w~n", [abs(e(1, Cur)) + abs(e(2, Cur))]);
 		true ->
-			[]
+			routeCheck(Cur, Rs)
+			% io:fwrite("not: ~w:~w~n", [Cur, R])
 	end.
